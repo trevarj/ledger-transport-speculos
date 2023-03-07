@@ -61,12 +61,18 @@ impl TransportSpeculosHttp {
             .client
             .get(url)
             .header(ACCEPT, HeaderValue::from_static("application/json"));
-        let req = if current_screen_only {
-            req.query(&[("currentscreenonly", "true")])
-        } else {
-            req
-        };
-        Ok(req.send().await?.json::<EventsResponse>().await?)
+        let mut query = vec![];
+        if current_screen_only {
+            query.push(("currentscreenonly", "true"));
+        }
+        query.push(("stream", "false"));
+
+        Ok(req
+            .query(&query)
+            .send()
+            .await?
+            .json::<EventsResponse>()
+            .await?)
     }
 
     /// Resets device event list
