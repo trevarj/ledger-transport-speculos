@@ -12,7 +12,7 @@ pub enum ApiError {
     Request(#[from] reqwest::Error),
 }
 
-#[derive(Debug, Clone, Copy)]
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum Button {
     Left,
     Right,
@@ -24,7 +24,7 @@ pub struct EventsResponse {
     pub events: Vec<Event>,
 }
 
-#[derive(Debug, Deserialize)]
+#[derive(Debug, Deserialize, PartialEq, Eq)]
 pub struct Event {
     pub text: String,
     pub x: u32,
